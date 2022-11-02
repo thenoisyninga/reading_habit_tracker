@@ -31,13 +31,13 @@ class _BookTileState extends State<BookTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(20.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.red,
+          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).colorScheme.primary,
         ),
-        height: MediaQuery.of(context).size.height * 0.15,
+        height: 130,
         width: MediaQuery.of(context).size.width * 0.9,
 
         child: Column(
@@ -46,21 +46,62 @@ class _BookTileState extends State<BookTile> {
             Container(
               height: MediaQuery.of(context).size.height * 0.07,
               alignment: Alignment.center,
-              child: Text(
-                widget.bookName,
-                style: TextStyle(
-                  fontSize: 20,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  widget.bookName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500
+                  ),
                 ),
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
                   icon: const Icon(Icons.delete),
                   splashRadius: 20,
                   onPressed: () {
-                    widget.onDeleteCallback(bookName);
+                    showDialog(
+                      context: context,
+                      builder: ((_) => AlertDialog(
+                        backgroundColor: Colors.grey[850],
+                        title: Text(
+                          "Are you sure you want to delete the bookmark for the book ${widget.bookName}?",
+                          style: const TextStyle(
+                            color: Colors.white
+                          ),
+                        ),
+                        actions: [
+                            TextButton(
+                              child: const Text(
+                                "Yes",
+                                style: TextStyle(
+                                  color: Colors.red
+                                ),
+                              ),
+                              onPressed: () {
+                                widget.onDeleteCallback(bookName);
+                                Navigator.pop(_);
+                              },
+                            ),
+                            TextButton(
+                              child: const Text(
+                                "No",
+                                style: TextStyle(
+                                  color: Colors.white
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(_);
+                              },
+                            )
+                          ],
+                      )
+                    ));
                   },
                 ),
                 Row(
