@@ -15,6 +15,7 @@ class BookTile extends StatefulWidget {
 
 class _BookTileState extends State<BookTile> {
   final TextEditingController _controller = TextEditingController();
+  String? _errorPage;
   
   String get bookName => widget.bookName;
   
@@ -126,33 +127,61 @@ class _BookTileState extends State<BookTile> {
                 ),
                 IconButton(
                   onPressed: () {
-                    print("Edit button Pressed");
                     _controller.text = widget.pageNum.toString();
                     showDialog(
                     context: context,
                     builder: (_) => AlertDialog(
                       backgroundColor: Colors.grey[900],
-                      title: Text(
+                      title: const Text(
                         "Update Bookmark",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       content: SizedBox(
-                        height: 100,
+                        height: 130,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             TextField(
                               controller: _controller,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                               decoration: InputDecoration(
+                                errorText: _errorPage,
                                 border: InputBorder.none,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  )
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  )
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                  )
+                                ),
                               ),
                             ),
-                            TextButton(
-                              child: Text("Update"),
+                            ElevatedButton(
+                              child: const Text("Update"),
                               onPressed: () {
-                                widget.onChangedPageCallback(bookName, int.parse(_controller.text));
-                                Navigator.pop(_);
+                                _errorPage = null;
+                                var isNumCheck = num.tryParse(_controller.text);
+                                if (isNumCheck != null)  {
+                                  widget.onChangedPageCallback(bookName, int.parse(_controller.text));
+                                  Navigator.pop(_);
+                                } else {
+                                  setState(() {
+                                    _errorPage = "This is not a number.";
+                                  });
+                                }
                               },
                             )
                           ],

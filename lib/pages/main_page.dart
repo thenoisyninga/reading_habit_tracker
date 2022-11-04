@@ -34,10 +34,10 @@ class _MainPageState extends State<MainPage> {
     List<dynamic> bookmarks = db.bookmarksData;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "B O O K M A R K S",
           style: TextStyle(
-            color: Colors.white
+            color: Colors.grey[900],
           ),
         ),
         centerTitle: true,

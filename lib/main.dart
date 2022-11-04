@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Book Track',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.yellow,
         scaffoldBackgroundColor: Colors.grey[900]
       ),
       initialRoute: '/home',

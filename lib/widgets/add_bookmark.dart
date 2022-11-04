@@ -37,6 +37,9 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
             // BookName Input
             TextField(
               controller: _bookNameController,
+              style: TextStyle(
+                color: Colors.white,
+              ),
               decoration: InputDecoration(
                 labelStyle: TextStyle(color: Colors.white),
                 labelText: 'Book Name',
@@ -64,6 +67,9 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
             TextField(
               controller: _totalPagesController,
               keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: Colors.white,
+              ),
               decoration: InputDecoration(
                 errorText: totalPagesError,
                 labelStyle: TextStyle(color: Colors.white),
