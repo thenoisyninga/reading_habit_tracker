@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 
@@ -15,7 +16,6 @@ class BookTile extends StatefulWidget {
 
 class _BookTileState extends State<BookTile> {
   final TextEditingController _controller = TextEditingController();
-  String? _errorPage;
   
   String get bookName => widget.bookName;
   
@@ -32,11 +32,11 @@ class _BookTileState extends State<BookTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(23.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(10),
+          color: (widget.pageNum == widget.totalPages) ? Colors.green :Theme.of(context).colorScheme.primary,
         ),
         height: 130,
         width: MediaQuery.of(context).size.width * 0.9,
@@ -48,12 +48,12 @@ class _BookTileState extends State<BookTile> {
               height: MediaQuery.of(context).size.height * 0.07,
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
+                padding: const EdgeInsets.all(0.0),
+                child: AutoSizeText(
                   widget.bookName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 27,
                     fontWeight: FontWeight.w500
                   ),
                 ),
@@ -64,6 +64,7 @@ class _BookTileState extends State<BookTile> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.delete),
+                  iconSize: 30,
                   splashRadius: 20,
                   onPressed: () {
                     showDialog(
@@ -130,68 +131,88 @@ class _BookTileState extends State<BookTile> {
                     _controller.text = widget.pageNum.toString();
                     showDialog(
                     context: context,
-                    builder: (_) => AlertDialog(
-                      backgroundColor: Colors.grey[900],
-                      title: const Text(
-                        "Update Bookmark",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      content: SizedBox(
-                        height: 130,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            TextField(
-                              controller: _controller,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              decoration: InputDecoration(
-                                errorText: _errorPage,
-                                border: InputBorder.none,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  )
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.red,
-                                  )
-                                ),
-                              ),
+                    builder: (_) {
+                      String? errorPage;
+                      return StatefulBuilder(
+                        builder: (context, setState) {
+                          return AlertDialog(
+                          backgroundColor: Colors.grey[900],
+                          title: Text(
+                            "Update Bookmark",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            ElevatedButton(
-                              child: const Text("Update"),
-                              onPressed: () {
-                                _errorPage = null;
-                                var isNumCheck = num.tryParse(_controller.text);
-                                if (isNumCheck != null)  {
-                                  widget.onChangedPageCallback(bookName, int.parse(_controller.text));
-                                  Navigator.pop(_);
-                                } else {
-                                  setState(() {
-                                    _errorPage = "This is not a number.";
-                                  });
-                                }
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                    )
+                          ),
+                          content: SizedBox(
+                            height: 130,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const SizedBox(height: 5),
+                                TextField(
+                                  controller: _controller,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  decoration: InputDecoration(
+                                    errorText: errorPage,
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.red,
+                                        width: 3
+                                      )
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                      )
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor,
+                                      )
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  child: const Text("Update"),
+                                  onPressed: () {
+                                    errorPage = null;
+                                    var isNumCheck = num.tryParse(_controller.text);
+                                    if (isNumCheck != null)  {
+                                      if (int.parse(_controller.text) <= widget.totalPages){
+                                        setState(() {
+                                          errorPage = null;
+                                        });
+                                        widget.onChangedPageCallback(bookName, int.parse(_controller.text));
+                                        Navigator.pop(_);
+                                      } else {
+                                        setState(() {
+                                          print("Attempted to run set state");
+                                          errorPage = "Page number greater than total pages.";
+                                        });
+                                      }
+                                    } else {
+                                      setState(() {
+                                        print("Attempted to run set state");
+                                        errorPage = "This is not a number.";
+                                      });
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                                          );
+                        }
+                      );
+                    }
                     );
                   },
                   splashRadius: 20,
                   icon: Icon(Icons.edit),
+                  iconSize: 30,
                 )
               ],
             )

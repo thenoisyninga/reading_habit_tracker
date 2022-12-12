@@ -14,7 +14,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  var _myBox = Hive.box("Bookmark_Database");
+  final _myBox = Hive.box("Bookmark_Database");
   BookmarksDatabase db = BookmarksDatabase();
 
   @override
@@ -33,15 +33,31 @@ class _MainPageState extends State<MainPage> {
     db.loadData();
     List<dynamic> bookmarks = db.bookmarksData;
     return Scaffold(
+
+
       appBar: AppBar(
         title: Text(
           "B O O K M A R K S",
           style: TextStyle(
             color: Colors.grey[900],
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).scaffoldBackgroundColor,  
+            )
+          )
+        ],
       ),
+
+
       body: bookmarks.isNotEmpty ? Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
@@ -53,6 +69,8 @@ class _MainPageState extends State<MainPage> {
             onDeleteCallback: onDelete,
           )).toList()
         ),
+
+
       ) : const Center(
         child: Text(
           "Get a book bro.",
@@ -62,6 +80,8 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
+
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -72,7 +92,10 @@ class _MainPageState extends State<MainPage> {
             )
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          size: 30,
+        ),
       ),
     );
   }

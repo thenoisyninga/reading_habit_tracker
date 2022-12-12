@@ -22,14 +22,16 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
     return AlertDialog(
       backgroundColor: Colors.grey[900],
       title: Text(
-        "Add New Bookmark",
+        "Add New\nBookmark",
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.white
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
+          color: Theme.of(context).colorScheme.primary
         ),
       ),
       content: SizedBox(
-        height: 250,
+        height: 200,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -51,12 +53,12 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                   )
                 ),
                 enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
@@ -76,12 +78,12 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
                 labelText: 'Total Pages',
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.primary,
                   )
                 ),
                 enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
