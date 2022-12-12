@@ -31,12 +31,13 @@ class _BookTileState extends State<BookTile> {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.all(23.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: (widget.pageNum == widget.totalPages) ? Colors.green :Theme.of(context).colorScheme.primary,
+          color: (widget.pageNum == widget.totalPages) ? Colors.green[900] :Theme.of(context).colorScheme.primary,
         ),
         height: 130,
         width: MediaQuery.of(context).size.width * 0.9,
@@ -113,14 +114,12 @@ class _BookTileState extends State<BookTile> {
                     Text(
                       widget.pageNum.toString(),
                       style: TextStyle(
-                        color: Colors.grey[900],
                         fontSize: 30,
                       ),
                     ),
                     Text(
                       "/${widget.totalPages.toString()}",
                       style: TextStyle(
-                        color: Colors.grey[900],
                         fontSize: 12
                       ),
                     )
@@ -184,6 +183,7 @@ class _BookTileState extends State<BookTile> {
                                       if (int.parse(_controller.text) <= widget.totalPages){
                                         setState(() {
                                           errorPage = null;
+                                          if (int.parse(_controller.text) == widget.totalPages) {ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Good Job!")));}
                                         });
                                         widget.onChangedPageCallback(bookName, int.parse(_controller.text));
                                         Navigator.pop(_);

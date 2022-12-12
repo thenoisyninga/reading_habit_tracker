@@ -39,7 +39,6 @@ class _MainPageState extends State<MainPage> {
         title: Text(
           "B O O K M A R K S",
           style: TextStyle(
-            color: Colors.grey[900],
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -51,7 +50,6 @@ class _MainPageState extends State<MainPage> {
             },
             icon: Icon(
               Icons.settings,
-              color: Theme.of(context).scaffoldBackgroundColor,  
             )
           )
         ],
@@ -92,9 +90,8 @@ class _MainPageState extends State<MainPage> {
             )
           );
         },
-        child: const Icon(
+        child: Icon(
           Icons.add,
-          size: 30,
         ),
       ),
     );

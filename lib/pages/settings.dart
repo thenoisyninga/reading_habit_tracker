@@ -18,7 +18,6 @@ class _SettingsPageState extends State<SettingsPage> {
           'S E T T I N G S',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).scaffoldBackgroundColor
           ),
         ),
       ),
@@ -30,7 +29,11 @@ class _SettingsPageState extends State<SettingsPage> {
             context: context,
             builder: (_) => AlertDialog(
               content: MaterialColorPicker(
-                
+                colors: currentTheme.getColorSwatchOptions(),
+                allowShades: false,
+                onMainColorChange: (color) {
+                  currentTheme.setPrimarySwatch(color as MaterialColor);
+                },
               ),
             )
           );  

@@ -28,7 +28,6 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
     currentTheme.addListener(() {
-      print("Changes");
       setState(() {});
     });
   }
@@ -41,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: currentTheme.getCurrentPrimarySwatch(),
         primarySwatch: currentTheme.getCurrentPrimarySwatch(),
         scaffoldBackgroundColor: Colors.grey[900],
+        iconTheme: IconThemeData(color: Colors.grey[900]),
       ),
       initialRoute: '/home',
       routes: {
