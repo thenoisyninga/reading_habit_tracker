@@ -8,7 +8,7 @@ class BookmarksDatabase{
   List<List<dynamic>> bookmarksData = [];
 
   createDefaultData() {
-    bookmarksData = [["Shoe Dog",'10','356'], ["Deep Work",'99','322']];
+    bookmarksData = [];
     updateData();
   }
 

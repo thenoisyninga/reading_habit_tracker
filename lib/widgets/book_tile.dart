@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 
 class BookTile extends StatefulWidget {
@@ -33,13 +34,13 @@ class _BookTileState extends State<BookTile> {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(23.0),
+      padding: const EdgeInsets.fromLTRB(23, 23, 23, 11.5),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: (widget.pageNum == widget.totalPages) ? Colors.green[900] :Theme.of(context).colorScheme.primary,
+          color: (widget.pageNum == widget.totalPages) ? Theme.of(context).colorScheme.primary.withAlpha(100) :Theme.of(context).colorScheme.primary,
         ),
-        height: 130,
+        height: 150,
         width: MediaQuery.of(context).size.width * 0.9,
 
         child: Column(
@@ -49,12 +50,12 @@ class _BookTileState extends State<BookTile> {
               height: MediaQuery.of(context).size.height * 0.07,
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.all(0.0),
+                padding: const EdgeInsets.fromLTRB(35, 0, 35, 5),
                 child: AutoSizeText(
                   widget.bookName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 27,
+                    fontSize: 33,
                     fontWeight: FontWeight.w500
                   ),
                 ),
@@ -71,19 +72,20 @@ class _BookTileState extends State<BookTile> {
                     showDialog(
                       context: context,
                       builder: ((_) => AlertDialog(
-                        backgroundColor: Colors.grey[850],
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                         title: Text(
-                          "Are you sure you want to delete the bookmark for the book ${widget.bookName}?",
-                          style: const TextStyle(
-                            color: Colors.white
+                          "Are you sure you want to delete the bookmark for the book '${widget.bookName}'?",
+                          style: TextStyle(
+                            // color: Colors.white,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                         actions: [
-                            TextButton(
+                            ElevatedButton(
                               child: const Text(
                                 "Yes",
                                 style: TextStyle(
-                                  color: Colors.red
+                                  // color: Colors.red
                                 ),
                               ),
                               onPressed: () {
@@ -107,22 +109,39 @@ class _BookTileState extends State<BookTile> {
                     ));
                   },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                Column(
                   children: [
-                    Text(
-                      widget.pageNum.toString(),
-                      style: TextStyle(
-                        fontSize: 30,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          widget.pageNum.toString(),
+                          style: TextStyle(
+                            fontSize: 25,
+                          ),
+                        ),
+                        Text(
+                          "/${widget.totalPages.toString()}",
+                          style: TextStyle(
+                            fontSize: 12
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 7,
+                    ),
+                    Container(
+                      child: LinearPercentIndicator(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        lineHeight: 5,
+                        percent: widget.pageNum / widget.totalPages,
+                        backgroundColor: Colors.black,
+                        progressColor: (widget.pageNum == widget.totalPages) ? Theme.of(context).colorScheme.primary.withAlpha(100) :Theme.of(context).colorScheme.primary.withAlpha(210),
+                        barRadius: Radius.circular(90),
                       ),
                     ),
-                    Text(
-                      "/${widget.totalPages.toString()}",
-                      style: TextStyle(
-                        fontSize: 12
-                      ),
-                    )
                   ],
                 ),
                 IconButton(
@@ -140,11 +159,12 @@ class _BookTileState extends State<BookTile> {
                             "Update Bookmark",
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontSize: 25,
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           content: SizedBox(
-                            height: 130,
+                            height: 150,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -174,6 +194,7 @@ class _BookTileState extends State<BookTile> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(height: 10),
                                 ElevatedButton(
                                   child: const Text("Update"),
                                   onPressed: () {
@@ -181,21 +202,24 @@ class _BookTileState extends State<BookTile> {
                                     var isNumCheck = num.tryParse(_controller.text);
                                     if (isNumCheck != null)  {
                                       if (int.parse(_controller.text) <= widget.totalPages){
+                                        if (int.parse(_controller.text) < 0) {
+                                          setState(() {
+                                            errorPage = "You entered a negative number";
+                                          });
+                                        } else {
                                         setState(() {
                                           errorPage = null;
                                           if (int.parse(_controller.text) == widget.totalPages) {ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Good Job!")));}
                                         });
                                         widget.onChangedPageCallback(bookName, int.parse(_controller.text));
-                                        Navigator.pop(_);
+                                        Navigator.pop(_);}
                                       } else {
                                         setState(() {
-                                          print("Attempted to run set state");
                                           errorPage = "Page number greater than total pages.";
                                         });
                                       }
                                     } else {
                                       setState(() {
-                                        print("Attempted to run set state");
                                         errorPage = "This is not a number.";
                                       });
                                     }

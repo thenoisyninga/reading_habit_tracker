@@ -23,20 +23,34 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: Center(
           child: ElevatedButton(
-        child: Text("Change Theme"),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "Change Theme",
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
         onPressed: () {
           showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              content: MaterialColorPicker(
-                colors: currentTheme.getColorSwatchOptions(),
-                allowShades: false,
-                onMainColorChange: (color) {
-                  currentTheme.setPrimarySwatch(color as MaterialColor);
-                },
-              ),
-            )
-          );  
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: Text(
+                      "Select Primary Color",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                          color: Colors.white),
+                    ),
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    content: MaterialColorPicker(
+                      selectedColor: currentTheme.getCurrentPrimarySwatch(),
+                      colors: currentTheme.getColorSwatchOptions(),
+                      allowShades: false,
+                      onMainColorChange: (color) {
+                        currentTheme.setPrimarySwatch(color as MaterialColor);
+                      },
+                    ),
+                  ));
         },
       )),
     );

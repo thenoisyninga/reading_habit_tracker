@@ -41,6 +41,9 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: currentTheme.getCurrentPrimarySwatch(),
         scaffoldBackgroundColor: Colors.grey[900],
         iconTheme: IconThemeData(color: Colors.grey[900]),
+        buttonTheme: ButtonThemeData(
+          splashColor: currentTheme.getCurrentPrimarySwatch().withAlpha(200),
+        )
       ),
       initialRoute: '/home',
       routes: {

@@ -31,7 +31,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     db.loadData();
-    List<dynamic> bookmarks = db.bookmarksData;
+    List<dynamic> bookmarks = db.bookmarksData.reversed.toList();
     return Scaffold(
 
 
@@ -69,12 +69,14 @@ class _MainPageState extends State<MainPage> {
         ),
 
 
-      ) : const Center(
+      ) : Center(
         child: Text(
-          "Get a book bro.",
+          "No books added yet.\nGet a book bro :p",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Color.fromARGB(255, 103, 103, 103)
+            // color: Colors.grey[200],
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.9)
           ),
         ),
       ),
@@ -114,7 +116,7 @@ class _MainPageState extends State<MainPage> {
 
   void addNewBookMark(String bookName, int totalPages) {
     setState(() {
-      db.addBookmark(bookName, 1, totalPages);
+      db.addBookmark(bookName, 0, totalPages);
     });
   }
 
