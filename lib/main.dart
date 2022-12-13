@@ -43,7 +43,8 @@ class _MyAppState extends State<MyApp> {
         iconTheme: IconThemeData(color: Colors.grey[900]),
         buttonTheme: ButtonThemeData(
           splashColor: currentTheme.getCurrentPrimarySwatch().withAlpha(200),
-        )
+        ),
+        dialogBackgroundColor: Colors.grey[900]
       ),
       initialRoute: '/home',
       routes: {

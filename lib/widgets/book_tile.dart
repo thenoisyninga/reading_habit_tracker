@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 
@@ -54,7 +55,7 @@ class _BookTileState extends State<BookTile> {
                 child: AutoSizeText(
                   widget.bookName,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: GoogleFonts.robotoSlab(
                     fontSize: 33,
                     fontWeight: FontWeight.w500
                   ),

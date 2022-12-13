@@ -22,8 +22,8 @@ class AppTheme with ChangeNotifier {
       String fetchedPrimarySwatchString = _myBox.get("CURRENT_PRIMARY_SWATCH");
       return primarySwatchesDictionary[fetchedPrimarySwatchString]!;
     } else {
-      setPrimarySwatch(primarySwatchesDictionary["yellow"]!);
-      return primarySwatchesDictionary["yellow"]!;
+      setPrimarySwatch(primarySwatchesDictionary["pink"]!);
+      return primarySwatchesDictionary["pink"]!;
     }
   }
 
