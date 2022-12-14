@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 import 'package:reading_habbit_and_page_tracker/dialogues/add_bookmark.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/book_tile.dart';
+import 'package:reading_habbit_and_page_tracker/widgets/reading_habbit_heatmap.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({super.key});
@@ -30,14 +31,31 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     db.loadData();
-    List<dynamic> bookmarks = db.bookmarksData.reversed.toList();
+    // Bookmarks Data from DB
+    List<dynamic> bookmarksData = db.bookmarksData.reversed.toList();
+
+    // Book Cards from Bookmarks Data
+    List<Widget> cardsList = bookmarksData
+        .map((book) => BookTile(
+              bookName: book[0],
+              pageNum: int.parse(book[1]),
+              totalPages: int.parse(book[2]),
+              onChangedPageCallback: onChangedPage,
+              onDeleteCallback: onDelete,
+            ))
+        .toList();
+
+    // Heatmap Calendar
+    Widget readingHeatmapCalendar = ReadingHabbitHeatmapCalendar(datasets: db.getReadFrequencyData());
+
+    // HeatmapCalendar + Book Cards
+    List<Widget> listViewItems = List.from([readingHeatmapCalendar, SizedBox(height: 20,)])..addAll(cardsList);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Reading Habbit Tracker",
-          style: GoogleFonts.seaweedScript(
-            fontSize: 25,
-          ),
+          style: GoogleFonts.seaweedScript(),
         ),
         centerTitle: true,
         actions: [
@@ -55,19 +73,10 @@ class _MainPageState extends State<MainPage> {
             image: DecorationImage(
                 image: AssetImage('assets/backdrop/backdrop.png'),
                 fit: BoxFit.cover)),
-        child: bookmarks.isNotEmpty
+        child: bookmarksData.isNotEmpty
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView(
-                    children: bookmarks
-                        .map((book) => BookTile(
-                              bookName: book[0],
-                              pageNum: int.parse(book[1]),
-                              totalPages: int.parse(book[2]),
-                              onChangedPageCallback: onChangedPage,
-                              onDeleteCallback: onDelete,
-                            ))
-                        .toList()),
+                child: ListView(children: listViewItems),
               )
             : Center(
                 child: Text(

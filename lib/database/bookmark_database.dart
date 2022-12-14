@@ -87,12 +87,26 @@ class BookmarksDatabase {
     int index = bookmarksData
         .indexOf(bookmarksData.firstWhere((element) => element[0] == bookName));
     
-    int oldPageNum = bookmarksData[index][1];
+    int oldPageNum = int.parse(bookmarksData[index][1]);
     int deltaPagesRead = newPageNum - oldPageNum;
     DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    if (pagesReadDaily[today] == null) {
+      pagesReadDaily[today] = 1;
+    }
     int newTotalPagesRead = pagesReadDaily[today] + deltaPagesRead;
     pagesReadDaily[today] = newTotalPagesRead < 0 ? 0 : newTotalPagesRead;
     updateData();
     loadData();
+  }
+
+   Map<DateTime, int> getReadFrequencyData() {
+    loadData();
+    Map<DateTime, int> percantageRead = {};
+    pagesReadDaily.forEach((key, value) {
+      int readingAmount = ((value / 20) * 10).round() + 1;
+      percantageRead[key] = readingAmount > 10 ? 10 : readingAmount < 1 ? 1 : readingAmount.round();
+    });
+
+    return percantageRead;
   }
 }
