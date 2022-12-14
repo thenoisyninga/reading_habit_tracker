@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:reading_habbit_and_page_tracker/config.dart';
+import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 import 'package:reading_habbit_and_page_tracker/pages/main_page.dart';
 import 'package:reading_habbit_and_page_tracker/pages/settings.dart';
 
 void main() async {
-
   await Hive.initFlutter();
 
   await Hive.openBox("Bookmark_Database");
@@ -22,10 +22,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentTheme.addListener(() {
       setState(() {});
@@ -37,19 +35,23 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Book Track',
       theme: ThemeData(
-        primaryColor: currentTheme.getCurrentPrimarySwatch(),
-        primarySwatch: currentTheme.getCurrentPrimarySwatch(),
-        scaffoldBackgroundColor: Colors.grey[900],
-        iconTheme: IconThemeData(color: Colors.grey[900]),
-        buttonTheme: ButtonThemeData(
-          splashColor: currentTheme.getCurrentPrimarySwatch().withAlpha(200),
-        ),
-        dialogBackgroundColor: Colors.grey[900]
+          primaryColor: currentTheme.getCurrentPrimarySwatch(),
+          primarySwatch: currentTheme.getCurrentPrimarySwatch(),
+          scaffoldBackgroundColor: Colors.grey[900],
+          iconTheme: IconThemeData(color: Colors.grey[900]),
+          buttonTheme: ButtonThemeData(
+            splashColor: currentTheme.getCurrentPrimarySwatch().withAlpha(200),
+          ),
+          dialogBackgroundColor: Colors.grey[900]
       ),
       initialRoute: '/home',
       routes: {
-        '/home':(context) => MainPage(),
-        '/settings':(context) => SettingsPage(),
+        '/home': (context) => MainPage(),
+        '/settings': (context) => SettingsPage(
+              databaseReference: BookmarksDatabase(),
+              setShowCalendarPrefCallback: (bool) {},
+              getShowCalendarPrefCallback: () {},
+            ),
       },
     );
   }

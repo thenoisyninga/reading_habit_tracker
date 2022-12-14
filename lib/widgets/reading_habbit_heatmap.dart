@@ -12,8 +12,6 @@ class ReadingHabbitHeatmapCalendar extends StatefulWidget {
 class _ReadingHabbitHeatmapCalendarState extends State<ReadingHabbitHeatmapCalendar> {
   @override
   Widget build(BuildContext context) {
-    print("datasets: ");
-    print(widget.datasets);
     return SizedBox(
       // height: 100,
       // width: 100,

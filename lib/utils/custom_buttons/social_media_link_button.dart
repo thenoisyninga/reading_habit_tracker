@@ -12,7 +12,6 @@ class SocialMediaLinkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          print(link);
           final Uri url = Uri.parse(link);
           launchUrl(url, mode: LaunchMode.externalApplication);
         },

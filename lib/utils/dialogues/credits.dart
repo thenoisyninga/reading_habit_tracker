@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../widgets/social_media_link_button.dart';
+import '../custom_buttons/social_media_link_button.dart';
 
 class Credits extends StatelessWidget {
   const Credits({super.key});
@@ -15,6 +15,7 @@ class Credits extends StatelessWidget {
         "Credits",
         textAlign: TextAlign.center,
         style: TextStyle(
+          fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.primary, fontSize: 30),
       ),
       content: SizedBox(

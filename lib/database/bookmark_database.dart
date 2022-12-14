@@ -109,4 +109,12 @@ class BookmarksDatabase {
 
     return percantageRead;
   }
+
+  void setShowCalendarPref(bool showCalendar) {
+    _myBox.put('show_habbit_calendar', showCalendar);
+  }
+
+  bool getShowCalendarPref() {
+    return _myBox.get('show_habbit_calendar') ?? true;
+  }
 }

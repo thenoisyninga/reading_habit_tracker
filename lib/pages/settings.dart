@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:reading_habbit_and_page_tracker/config.dart';
-import 'package:reading_habbit_and_page_tracker/dialogues/credits.dart';
+import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
+import 'package:reading_habbit_and_page_tracker/utils/dialogues/credits.dart';
 
-import '../widgets/settings_button.dart';
+import '../utils/custom_buttons/settings_button.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  const SettingsPage(
+      {super.key,
+      required this.databaseReference,
+      required this.setShowCalendarPrefCallback,
+      required this.getShowCalendarPrefCallback});
+
+  final BookmarksDatabase databaseReference;
+  final Function setShowCalendarPrefCallback;
+  final Function getShowCalendarPrefCallback;
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +48,30 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: SizedBox(
+                height: 63,
+                width: 200,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Show Calendar",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    Switch(
+                        value: widget.databaseReference.getShowCalendarPref(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            widget.setShowCalendarPrefCallback(newValue);
+                          });
+                        }),
+                  ],
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(6.0),
               child: SettingsButton(
@@ -69,7 +107,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: SettingsButton(
                   title: 'Credits',
                   onPressed: () {
-                    showDialog(context: context, builder: ((context) => const Credits()));
+                    showDialog(
+                        context: context,
+                        builder: ((context) => const Credits()));
                   },
                 )),
           ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 class AddBookMarkDialogue extends StatefulWidget {
-  const AddBookMarkDialogue({super.key, required this.addNewBookMarkCallback, required this.bookmarkAlreadyExistsCheckCallback});
+  const AddBookMarkDialogue(
+      {super.key,
+      required this.addNewBookMarkCallback,
+      required this.bookmarkAlreadyExistsCheckCallback});
 
   final Function(String bookName, int totalPages) addNewBookMarkCallback;
   final Function(String bookName) bookmarkAlreadyExistsCheckCallback;
@@ -24,17 +26,15 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
         "Add New\nBookmark",
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 25,
-          color: Theme.of(context).colorScheme.primary
-        ),
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Theme.of(context).colorScheme.primary),
       ),
       content: SizedBox(
         height: 200,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-
             // BookName Input
             TextField(
               controller: _bookNameController,
@@ -46,22 +46,19 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
                 labelText: 'Book Name',
                 errorText: bookNameError,
                 errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.red,
-                  )
-                ),
+                    borderSide: BorderSide(
+                  color: Colors.red,
+                )),
                 focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                )),
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context).colorScheme.primary,
-                  )
-                ),
-                enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
-              
             ),
 
             // Total Pages Input
@@ -76,13 +73,12 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
                 labelStyle: TextStyle(color: Colors.white),
                 labelText: 'Total Pages',
                 focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                )),
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Theme.of(context).colorScheme.primary,
-                  )
-                ),
-                enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
@@ -91,23 +87,24 @@ class _AddBookMarkDialogueState extends State<AddBookMarkDialogue> {
             // Add Button
             ElevatedButton(
               child: Text("Add"),
-
               onPressed: () {
+
                 // Verify Inputs
                 var totalPagesCheck = num.tryParse(_totalPagesController.text);
                 bookNameError = null;
                 totalPagesError = null;
-                
-                if (!widget.bookmarkAlreadyExistsCheckCallback(_bookNameController.text) && totalPagesCheck != null){
+
+                if (!widget.bookmarkAlreadyExistsCheckCallback(
+                        _bookNameController.text) &&
+                    totalPagesCheck != null) {
                   widget.addNewBookMarkCallback(
                     _bookNameController.text,
                     int.parse(_totalPagesController.text),
                   );
-
                   Navigator.pop(context);
-
                 } else {
-                  if (widget.bookmarkAlreadyExistsCheckCallback(_bookNameController.text)) {
+                  if (widget.bookmarkAlreadyExistsCheckCallback(
+                      _bookNameController.text)) {
                     setState(() {
                       bookNameError = "This book already exists.";
                     });
