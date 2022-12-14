@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../widgets/social_media_link_button.dart';
+
 class Credits extends StatelessWidget {
   const Credits({super.key});
 
@@ -16,29 +18,37 @@ class Credits extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary, fontSize: 30),
       ),
       content: SizedBox(
-        height: 300,
+        height: 280,
         child: Column(children: [
-          CircleAvatar(
-            child: Icon(Icons.face),
+          const CircleAvatar(
             radius: 40,
+            foregroundColor: Colors.red,
+            backgroundImage: AssetImage('assets/credits/developer_photo.jpeg'),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 20),
           Text(
             "Hi there! This app is developed by me, Sarim Ahmed. Click the icons below if you want to check out more of my creations, or if you just want to get know me better :D",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey[200]),
           ),
-          SizedBox(height: 30),
-          IconButton(
-              onPressed: () {
-                final Uri url = Uri.parse("https://github.com");
-                launchUrl(url, mode: LaunchMode.externalApplication);
-              },
-              icon: Icon(
-                FontAwesomeIcons.github,
-                color: Colors.white,
-                size: 30,
-              ))
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const SocialMediaLinkButton(
+                iconData: FontAwesomeIcons.instagram,
+                link: 'https://www.instagram.com/_sarimahmed_/',
+              ),
+              const SocialMediaLinkButton(
+                iconData: FontAwesomeIcons.github,
+                link: 'https://github.com/thenoisyninga',
+              ),
+              const SocialMediaLinkButton(
+                iconData: FontAwesomeIcons.linkedin,
+                link: 'https://linkedin.com/in/sarim-ahmed-89412a19a/',
+              ),
+            ],
+          ),
         ]),
       ),
     );
