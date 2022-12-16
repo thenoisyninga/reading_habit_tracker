@@ -11,14 +11,14 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       child: Container(
-        height: 63,
-        width: 200,
+        height: 50,
+        width: 150,
         alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(0.0),
           child: Text(
             title,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 17),
           ),
         ),
       ),

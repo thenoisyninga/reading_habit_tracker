@@ -13,8 +13,6 @@ class _ReadingHabbitHeatmapCalendarState extends State<ReadingHabbitHeatmapCalen
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // height: 100,
-      // width: 100,
       child: HeatMapCalendar(
         colorMode: ColorMode.color,
         colorsets: {
@@ -32,7 +30,7 @@ class _ReadingHabbitHeatmapCalendarState extends State<ReadingHabbitHeatmapCalen
         textColor: Theme.of(context).scaffoldBackgroundColor,
         showColorTip: false,
         datasets: widget.datasets,
-        size: 40,
+        size: 37,
         fontSize: 10,
         weekTextColor: Colors.white,
         defaultColor: Colors.grey[200],

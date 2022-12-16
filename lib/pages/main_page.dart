@@ -6,6 +6,7 @@ import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart'
 import 'package:reading_habbit_and_page_tracker/pages/settings.dart';
 import 'package:reading_habbit_and_page_tracker/utils/dialogues/add_bookmark.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/book_tile.dart';
+import 'package:reading_habbit_and_page_tracker/widgets/no_books_added_banner.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/reading_habbit_heatmap.dart';
 
 class MainPage extends StatefulWidget {
@@ -38,19 +39,11 @@ class _MainPageState extends State<MainPage> {
     // Book Cards from Bookmarks Data - If null then return note
     List<Widget> cardsList = bookmarksData.isEmpty
         ? [
-            SizedBox(
-              height: 150,
+            const SizedBox(
+              height: 140,
             ),
-            Center(
-              child: Text(
-                "No books added yet.\nGet a book bro :p",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    // color: Colors.grey[200],
-                    fontWeight: FontWeight.w400,
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.9)),
-              ),
+            const Center(
+              child: NoBookAddedBanner(),
             )
           ]
         : bookmarksData
@@ -88,11 +81,6 @@ class _MainPageState extends State<MainPage> {
         actions: [
           IconButton(
               onPressed: () {
-                // Navigator.pushNamed(context, '/settings', arguments: {
-                //   'databaseReference': db,
-                //   'setShowCalendarPrefCallback': setShowCalendarPref,
-                //   'getShowCalendarPrefCallback': getShowCalendarPref
-                // });
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -116,17 +104,7 @@ class _MainPageState extends State<MainPage> {
           // If calender hidden && no book cards, then no books message in center, else list view
           child: !db.getShowCalendarPref() && bookmarksData.isEmpty
               ? Center(
-                  child: Text(
-                    "No books added yet.\nGet a book bro :p",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        // color: Colors.grey[200],
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.9)),
-                  ),
+                  child: NoBookAddedBanner(),
                 )
               : ListView(children: listViewItems)),
       floatingActionButton: FloatingActionButton(
