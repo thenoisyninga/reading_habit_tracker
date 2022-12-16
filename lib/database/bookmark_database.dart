@@ -102,9 +102,10 @@ class BookmarksDatabase {
    Map<DateTime, int> getReadFrequencyData() {
     loadData();
     Map<DateTime, int> percantageRead = {};
-    pagesReadDaily.forEach((key, value) {
-      int readingAmount = ((value / 20) * 10).round() + 1;
-      percantageRead[key] = readingAmount > 10 ? 10 : readingAmount < 1 ? 1 : readingAmount.round();
+    pagesReadDaily.forEach((date, pagesRead) {
+      int targetPages = 20;
+      int readingAmount = (((pagesRead / targetPages) * 9) + 1).round();
+      percantageRead[date] = readingAmount > 10 ? 10 : readingAmount < 1 ? 1 : readingAmount;
     });
 
     return percantageRead;

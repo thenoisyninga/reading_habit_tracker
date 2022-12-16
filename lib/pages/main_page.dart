@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     List<Widget> cardsList = bookmarksData.isEmpty
         ? [
             const SizedBox(
-              height: 130,
+              height: 120,
             ),
             const Center(
               child: NoBookAddedBanner(),
