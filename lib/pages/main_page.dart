@@ -1,13 +1,16 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:reading_habbit_and_page_tracker/config.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 import 'package:reading_habbit_and_page_tracker/pages/settings.dart';
+import 'package:reading_habbit_and_page_tracker/utils/confetti.dart';
 import 'package:reading_habbit_and_page_tracker/utils/dialogues/add_bookmark.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/book_tile.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/no_books_added_banner.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/reading_habbit_heatmap.dart';
+
+import '../utils/dialogues/book_finised_congrats.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({super.key});
@@ -17,6 +20,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late ConfettiController _confettiController;
+
   final _myBox = Hive.box("Bookmark_Database");
   BookmarksDatabase db = BookmarksDatabase();
 
@@ -28,6 +33,15 @@ class _MainPageState extends State<MainPage> {
       db.loadData();
     }
     super.initState();
+
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 2));
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     List<Widget> cardsList = bookmarksData.isEmpty
         ? [
             const SizedBox(
-              height: 140,
+              height: 130,
             ),
             const Center(
               child: NoBookAddedBanner(),
@@ -53,6 +67,7 @@ class _MainPageState extends State<MainPage> {
                   totalPages: int.parse(book[2]),
                   onChangedPageCallback: onChangedPage,
                   onDeleteCallback: onDelete,
+                  onCompletedBookCallback: onCompletedBook,
                 ))
             .toList();
 
@@ -64,62 +79,72 @@ class _MainPageState extends State<MainPage> {
     List<Widget> listViewItems = List.from(db.getShowCalendarPref()
         ? [
             readingHeatmapCalendar,
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ]
         : [])
       ..addAll(cardsList);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Reading Habbit Tracker",
-          style: GoogleFonts.seaweedScript(),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => SettingsPage(
-                              databaseReference: db,
-                              setShowCalendarPrefCallback: setShowCalendarPref,
-                              getShowCalendarPrefCallback: getShowCalendarPref,
-                            ))));
-              },
-              icon: Icon(
-                Icons.settings,
-              ))
-        ],
-      ),
-      body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/backdrop/backdrop.png'),
-                  fit: BoxFit.cover)),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Image(
+              image: AssetImage(currentTheme.isDark()
+                  ? 'assets/appbar/appbar_title_black.png'
+                  : 'assets/appbar/appbar_title_white.png'),
+              height: 35,
+            ),
+            centerTitle: true,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => SettingsPage(
+                                  databaseReference: db,
+                                  setShowCalendarPrefCallback:
+                                      setShowCalendarPref,
+                                  getShowCalendarPrefCallback:
+                                      getShowCalendarPref,
+                                ))));
+                  },
+                  icon: const Icon(
+                    Icons.settings,
+                  )),
+            ],
+          ),
+          body: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/backdrop/backdrop.png'),
+                      fit: BoxFit.cover)),
 
-          // If calender hidden && no book cards, then no books message in center, else list view
-          child: !db.getShowCalendarPref() && bookmarksData.isEmpty
-              ? Center(
-                  child: NoBookAddedBanner(),
-                )
-              : ListView(children: listViewItems)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (_) => AddBookMarkDialogue(
-                    addNewBookMarkCallback: addNewBookMark,
-                    bookmarkAlreadyExistsCheckCallback: bookmarkAlreadyExists,
-                  ));
-        },
-        child: Icon(
-          Icons.add,
+              // If calender hidden && no book cards, then no books message in center, else list view
+              child: !db.getShowCalendarPref() && bookmarksData.isEmpty
+                  ? const Center(
+                      child: NoBookAddedBanner(),
+                    )
+                  : ListView(children: listViewItems)),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (_) => AddBookMarkDialogue(
+                        addNewBookMarkCallback: addNewBookMark,
+                        bookmarkAlreadyExistsCheckCallback:
+                            bookmarkAlreadyExists,
+                      ));
+            },
+            child: const Icon(
+              Icons.add,
+            ),
+          ),
         ),
-      ),
+        CelebrationConfetti(controller: _confettiController),
+      ],
     );
   }
 
@@ -147,14 +172,19 @@ class _MainPageState extends State<MainPage> {
   }
 
   bool getShowCalendarPref() {
-    print("Get Callback Called");
     return db.getShowCalendarPref();
   }
 
   void setShowCalendarPref(bool newValue) {
     setState(() {
-      print("Set Callback Called");
       db.setShowCalendarPref(newValue);
     });
+  }
+
+  void onCompletedBook(String bookName) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Congrats on finishing the book <3")));
+    showDialog(context: context, builder: (__) => BookFinishedCongrats(bookName: bookName));
+    _confettiController.play();
   }
 }

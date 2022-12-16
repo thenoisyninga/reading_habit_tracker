@@ -17,6 +17,19 @@ class AppTheme with ChangeNotifier {
     
   };
 
+  Map<MaterialColor, bool> colorDarkStatus = {
+    Colors.red: false,
+    Colors.yellow: true,
+    Colors.purple: false,
+    Colors.blue: false,
+    Colors.green: false,
+    Colors.pink: false,
+    Colors.brown: false,
+    Colors.lightBlue: true,
+    Colors.orange: true,
+  };
+
+
   MaterialColor getCurrentPrimarySwatch() {
     if (_myBox.containsKey("CURRENT_PRIMARY_SWATCH")) {
       String fetchedPrimarySwatchString = _myBox.get("CURRENT_PRIMARY_SWATCH");
@@ -37,4 +50,9 @@ class AppTheme with ChangeNotifier {
     List<MaterialColor> colorSwatchOptions =  primarySwatchesDictionary.values.toList();
     return colorSwatchOptions;
   }
+
+  bool isDark() {
+    return colorDarkStatus[getCurrentPrimarySwatch()]!;
+  }
+
 }

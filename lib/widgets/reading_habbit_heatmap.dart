@@ -30,10 +30,11 @@ class _ReadingHabbitHeatmapCalendarState extends State<ReadingHabbitHeatmapCalen
         textColor: Theme.of(context).scaffoldBackgroundColor,
         showColorTip: false,
         datasets: widget.datasets,
-        size: 37,
+        size: 40,
         fontSize: 10,
         weekTextColor: Colors.white,
         defaultColor: Colors.grey[200],
+        
       ),
     );
   }

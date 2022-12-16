@@ -12,7 +12,7 @@ class NoBookAddedBanner extends StatelessWidget {
       children: [
         const Image(
           image: AssetImage('assets/custom_icons/no-content_light_grey.png'),
-          height: 75,
+          height: 70,
         ),
         const SizedBox(height: 15),
         Text(
