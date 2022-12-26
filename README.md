@@ -1,3 +1,3 @@
-# reading_habbit_and_page_tracker
+# Reading Habbit Tracker
 
-A useful bookmark keeper and reading habit tracker for people wanting to make their reading consistent.
+A useful habit tracker app that keeps your reading bookmarks overtime to provide a visual representation of how much you have read overtime.
