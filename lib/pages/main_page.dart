@@ -10,7 +10,7 @@ import 'package:reading_habbit_and_page_tracker/widgets/book_tile.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/no_books_added_banner.dart';
 import 'package:reading_habbit_and_page_tracker/widgets/reading_habbit_heatmap.dart';
 
-import '../utils/dialogues/book_finised_congrats.dart';
+import '../utils/dialogues/book_finished_congrats.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({super.key});

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 
-import '../utils/dialogues/book_finised_congrats.dart';
+import '../utils/dialogues/book_finished_congrats.dart';
 
 class BookTile extends StatefulWidget {
   BookTile({
@@ -44,12 +44,13 @@ class _BookTileState extends State<BookTile> {
 
   @override
   Widget build(BuildContext context) {
+    bool isCompleted = widget.pageNum == widget.totalPages;
     return Padding(
       padding: const EdgeInsets.fromLTRB(23, 23, 23, 11.5),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: (widget.pageNum == widget.totalPages)
+          color: (isCompleted)
               ? Theme.of(context).colorScheme.primary.withAlpha(100)
               : Theme.of(context).colorScheme.primary,
         ),
@@ -66,8 +67,13 @@ class _BookTileState extends State<BookTile> {
                 child: AutoSizeText(
                   widget.bookName,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.robotoSlab(
-                      fontSize: 33, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 33,
+                    fontWeight: FontWeight.w500,
+                    decoration: isCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
                 ),
               ),
             ),
@@ -144,7 +150,7 @@ class _BookTileState extends State<BookTile> {
                         lineHeight: 5,
                         percent: widget.pageNum / widget.totalPages,
                         backgroundColor: Colors.black,
-                        progressColor: (widget.pageNum == widget.totalPages)
+                        progressColor: (isCompleted)
                             ? Theme.of(context)
                                 .colorScheme
                                 .primary
@@ -225,9 +231,14 @@ class _BookTileState extends State<BookTile> {
                                                 if (int.parse(
                                                         _controller.text) ==
                                                     widget.totalPages) {
-                                                  widget.onChangedPageCallback(bookName, int.parse(_controller.text));
+                                                  widget.onChangedPageCallback(
+                                                      bookName,
+                                                      int.parse(
+                                                          _controller.text));
                                                   Navigator.pop(_);
-                                                  widget.onCompletedBookCallback(widget.bookName);
+                                                  widget
+                                                      .onCompletedBookCallback(
+                                                          widget.bookName);
                                                 } else {
                                                   widget.onChangedPageCallback(
                                                     bookName,

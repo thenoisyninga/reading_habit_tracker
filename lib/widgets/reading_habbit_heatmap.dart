@@ -34,7 +34,7 @@ class _ReadingHabbitHeatmapCalendarState extends State<ReadingHabbitHeatmapCalen
         fontSize: 10,
         weekTextColor: Colors.white,
         defaultColor: Colors.grey[200],
-        
+        onClick: (DateTime date) {},
       ),
     );
   }
