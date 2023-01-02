@@ -42,7 +42,8 @@ class _MyAppState extends State<MyApp> {
           buttonTheme: ButtonThemeData(
             splashColor: currentTheme.getCurrentPrimarySwatch().withAlpha(200),
           ),
-          dialogBackgroundColor: Colors.grey[900]
+          dialogBackgroundColor: Colors.grey[900],
+          textTheme: TextTheme(),
       ),
       initialRoute: '/home',
       routes: {
