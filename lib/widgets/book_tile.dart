@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:reading_habbit_and_page_tracker/config.dart';
 import 'package:reading_habbit_and_page_tracker/database/bookmark_database.dart';
 
 import '../utils/dialogues/book_finished_congrats.dart';
@@ -52,7 +53,9 @@ class _BookTileState extends State<BookTile> {
           borderRadius: BorderRadius.circular(10),
           color: (isCompleted)
               ? Theme.of(context).colorScheme.primary.withAlpha(100)
-              : Theme.of(context).colorScheme.primary,
+              : currentTheme.isDark()
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.primary.withAlpha(230),
         ),
         height: 150,
         width: MediaQuery.of(context).size.width * 0.9,
@@ -68,6 +71,9 @@ class _BookTileState extends State<BookTile> {
                   widget.bookName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    color: currentTheme.isDark()
+                        ? Colors.grey[900]
+                        : Colors.grey[300],
                     fontSize: 33,
                     fontWeight: FontWeight.w500,
                     decoration: isCompleted
@@ -84,6 +90,9 @@ class _BookTileState extends State<BookTile> {
                   icon: const Icon(Icons.delete),
                   iconSize: 30,
                   splashRadius: 20,
+                  color: currentTheme.isDark()
+                      ? Colors.grey[900]
+                      : Colors.grey[300],
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -133,11 +142,19 @@ class _BookTileState extends State<BookTile> {
                           widget.pageNum.toString(),
                           style: TextStyle(
                             fontSize: 25,
+                            color: currentTheme.isDark()
+                                ? Colors.grey[900]
+                                : Colors.grey[300],
                           ),
                         ),
                         Text(
                           "/${widget.totalPages.toString()}",
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: currentTheme.isDark()
+                                ? Colors.grey[900]
+                                : Colors.grey[300],
+                          ),
                         )
                       ],
                     ),
@@ -149,16 +166,20 @@ class _BookTileState extends State<BookTile> {
                         width: MediaQuery.of(context).size.width * 0.2,
                         lineHeight: 5,
                         percent: widget.pageNum / widget.totalPages,
-                        backgroundColor: Colors.black,
+                        backgroundColor: currentTheme.isDark()
+                            ? Colors.grey[900]
+                            : Colors.grey[300],
                         progressColor: (isCompleted)
                             ? Theme.of(context)
                                 .colorScheme
                                 .primary
                                 .withAlpha(100)
-                            : Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withAlpha(210),
+                            : currentTheme.isDark()
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withAlpha(210)
+                                : Theme.of(context).colorScheme.primary,
                         barRadius: Radius.circular(90),
                       ),
                     ),
@@ -271,6 +292,9 @@ class _BookTileState extends State<BookTile> {
                   splashRadius: 20,
                   icon: Icon(Icons.edit),
                   iconSize: 30,
+                  color: currentTheme.isDark()
+                      ? Colors.grey[900]
+                      : Colors.grey[300],
                 )
               ],
             )
